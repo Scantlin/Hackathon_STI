@@ -1,11 +1,10 @@
 import "./index.css";
 
+import "./BedtimeStoryGenerator";
+import BedtimeStoryGenerator from "./BedtimeStoryGenerator";
+
 function App() {
-	return (
-		<>
-			<h1 className="text-8xl font-bold uderline">Welcome to React and Vite</h1>
-		</>
-	);
+	return <BedtimeStoryGenerator></BedtimeStoryGenerator>;
 }
 
 export default App;
