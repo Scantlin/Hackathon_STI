@@ -4,13 +4,15 @@ const BedtimeStoryGenerator = () => {
 	const [darkMode, setDarkMode] = useState(false);
 	const [activeTab, setActiveTab] = useState("generate");
 	const [formData, setFormData] = useState({
-		childName: "",
-		age: "",
-		interests: "",
-		moralLesson: "",
-		storyLength: "medium",
+		childName: "Emma",
+		age: "8",
+		interests: "space",
+		moralLesson: "kindness",
+		storyLength: "long",
 	});
-	const [generatedStory, setGeneratedStory] = useState("");
+	const [generatedStory, setGeneratedStory] = useState(
+		"Once upon a time, there was a brave 8-year-old named Emma who loved space. One day, while exploring the forest, Emma encountered a magical creature who taught them an important lesson about kindness. From that day forward, Emma always remembered to kindness and lived happily ever after."
+	);
 	const [savedStories, setSavedStories] = useState([]);
 	const [isGenerating, setIsGenerating] = useState(false);
 
@@ -73,27 +75,34 @@ const BedtimeStoryGenerator = () => {
 				<header className="flex justify-between items-center mb-8">
 					<div className="flex items-center">
 						<div className="w-8 h-8 rounded-full bg-purple-600 mr-2"></div>
-						<h1 className="text-3xl font-bold">DreamyTales</h1>
+						<h1 className="text-2xl md:text-3xl font-bold">
+							DreamyTales
+						</h1>
 					</div>
 					<button
 						onClick={() => setDarkMode(!darkMode)}
 						className={`p-2 rounded-full ${
 							darkMode
-								? "bg-gray-700 text-yellow-300"
-								: "bg-amber-200 text-gray-700"
+								? "bg-gray-800 text-yellow-300"
+								: "bg-amber-200 text-gray-800"
 						}`}
+						aria-label="Toggle dark mode"
 					>
-						<div className="w-5 h-5 rounded-full bg-current"></div>
+						<div
+							className={`w-5 h-5 rounded-full ${
+								darkMode ? "bg-yellow-300" : "bg-gray-800"
+							}`}
+						></div>
 					</button>
 				</header>
 
 				{/* Main Content */}
 				<main className="max-w-4xl mx-auto">
 					{/* Tabs */}
-					<div className="flex border-b mb-6">
+					<div className="flex border-b mb-6 overflow-x-auto">
 						<button
 							onClick={() => setActiveTab("generate")}
-							className={`px-4 py-2 font-medium ${
+							className={`px-4 py-2 font-medium whitespace-nowrap ${
 								activeTab === "generate"
 									? darkMode
 										? "border-b-2 border-purple-500 text-purple-400"
@@ -105,7 +114,7 @@ const BedtimeStoryGenerator = () => {
 						</button>
 						<button
 							onClick={() => setActiveTab("library")}
-							className={`px-4 py-2 font-medium ${
+							className={`px-4 py-2 font-medium whitespace-nowrap ${
 								activeTab === "library"
 									? darkMode
 										? "border-b-2 border-purple-500 text-purple-400"
@@ -119,9 +128,9 @@ const BedtimeStoryGenerator = () => {
 
 					{/* Generate Tab */}
 					{activeTab === "generate" && (
-						<div className="grid md:grid-cols-2 gap-8">
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 							<div
-								className={`p-6 rounded-lg ${
+								className={`p-4 sm:p-6 rounded-lg ${
 									darkMode
 										? "bg-gray-800"
 										: "bg-white shadow-md"
@@ -255,7 +264,7 @@ const BedtimeStoryGenerator = () => {
 							</div>
 
 							<div
-								className={`p-6 rounded-lg ${
+								className={`p-4 sm:p-6 rounded-lg ${
 									darkMode
 										? "bg-gray-800"
 										: "bg-white shadow-md"
@@ -282,7 +291,7 @@ const BedtimeStoryGenerator = () => {
 
 								{generatedStory ? (
 									<div
-										className={`p-4 rounded ${
+										className={`p-3 sm:p-4 rounded ${
 											darkMode
 												? "bg-gray-700"
 												: "bg-amber-50"
@@ -292,13 +301,13 @@ const BedtimeStoryGenerator = () => {
 									</div>
 								) : (
 									<div
-										className={`p-8 text-center rounded ${
+										className={`p-6 sm:p-8 text-center rounded ${
 											darkMode
 												? "bg-gray-700 text-gray-400"
 												: "bg-amber-100 text-amber-800"
 										}`}
 									>
-										<div className="w-12 h-12 rounded-full bg-current opacity-30 mx-auto mb-4"></div>
+										<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-current opacity-30 mx-auto mb-4"></div>
 										<p>
 											Your personalized story will appear
 											here once generated.
@@ -312,7 +321,7 @@ const BedtimeStoryGenerator = () => {
 					{/* Library Tab */}
 					{activeTab === "library" && (
 						<div
-							className={`p-6 rounded-lg ${
+							className={`p-4 sm:p-6 rounded-lg ${
 								darkMode ? "bg-gray-800" : "bg-white shadow-md"
 							}`}
 						>
@@ -321,11 +330,11 @@ const BedtimeStoryGenerator = () => {
 							</h2>
 
 							{savedStories.length > 0 ? (
-								<div className="space-y-4">
+								<div className="space-y-3 sm:space-y-4">
 									{savedStories.map((story) => (
 										<div
 											key={story.id}
-											className={`p-4 rounded-lg ${
+											className={`p-3 sm:p-4 rounded-lg ${
 												darkMode
 													? "bg-gray-700 hover:bg-gray-600"
 													: "bg-amber-50 hover:bg-amber-100"
@@ -333,18 +342,18 @@ const BedtimeStoryGenerator = () => {
 										>
 											<div className="flex justify-between items-start">
 												<div>
-													<h3 className="font-bold">
+													<h3 className="font-bold text-sm sm:text-base">
 														{story.title}
 													</h3>
-													<p className="text-sm opacity-70">
+													<p className="text-xs sm:text-sm opacity-70">
 														Created for{" "}
 														{story.childName} on{" "}
 														{story.date}
 													</p>
 												</div>
-												<div className="w-5 h-5 rounded-full bg-gray-500"></div>
+												<div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-500"></div>
 											</div>
-											<div className="mt-2 line-clamp-2 text-sm">
+											<div className="mt-2 line-clamp-2 text-xs sm:text-sm">
 												{story.content.substring(
 													0,
 													150
@@ -356,13 +365,13 @@ const BedtimeStoryGenerator = () => {
 								</div>
 							) : (
 								<div
-									className={`p-8 text-center rounded ${
+									className={`p-6 sm:p-8 text-center rounded ${
 										darkMode
 											? "bg-gray-700 text-gray-400"
 											: "bg-amber-100 text-amber-800"
 									}`}
 								>
-									<div className="w-12 h-12 rounded-full bg-current opacity-30 mx-auto mb-4"></div>
+									<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-current opacity-30 mx-auto mb-4"></div>
 									<p>You haven't saved any stories yet.</p>
 									<p>
 										Generate a story and click "Save" to add
@@ -375,7 +384,7 @@ const BedtimeStoryGenerator = () => {
 				</main>
 
 				{/* Footer */}
-				<footer className="mt-12 text-center text-sm opacity-70">
+				<footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm opacity-70">
 					<p>
 						DreamyTales - Magical bedtime stories generated with AI
 					</p>
