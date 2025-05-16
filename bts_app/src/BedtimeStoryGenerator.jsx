@@ -28,7 +28,6 @@ const BedtimeStoryGenerator = () => {
 		e.preventDefault();
 		setIsGenerating(true);
 
-		// Simulate API call
 		setTimeout(() => {
 			const sampleStory = `Once upon a time, there was a brave ${
 				formData.age
@@ -66,30 +65,49 @@ const BedtimeStoryGenerator = () => {
 		<div
 			className={`min-h-screen transition-colors duration-300 ${
 				darkMode
-					? "bg-gray-900 text-gray-100"
-					: "bg-amber-50 text-gray-800"
+					? "bg-gradient-to-br from-gray-900 to-gray-800 text-gray-100"
+					: "bg-gradient-to-br from-amber-50 to-amber-100 text-gray-800"
 			}`}
 		>
-			<div className="container mx-auto px-4 py-8">
+			{/* Stylistic elements */}
+			<div
+				className={`fixed top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 z-50`}
+			></div>
+			<div
+				className={`absolute top-20 right-10 w-40 h-40 rounded-full blur-xl opacity-20 ${
+					darkMode ? "bg-purple-600" : "bg-amber-300"
+				}`}
+			></div>
+			<div
+				className={`absolute bottom-10 left-10 w-60 h-60 rounded-full blur-xl opacity-20 ${
+					darkMode ? "bg-blue-600" : "bg-amber-200"
+				}`}
+			></div>
+
+			<div className="container mx-auto px-4 py-8 relative z-10">
 				{/* Header */}
 				<header className="flex justify-between items-center mb-8">
 					<div className="flex items-center">
-						<div className="w-8 h-8 rounded-full bg-purple-600 mr-2"></div>
-						<h1 className="text-2xl md:text-3xl font-bold">
+						<div className="w-10 h-10 rounded-lg bg-gradient-to-r from-purple-600 to-pink-500 shadow-lg flex items-center justify-center mr-3">
+							<span className="text-white font-bold text-xl">
+								DT
+							</span>
+						</div>
+						<h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-500 bg-clip-text text-transparent">
 							DreamyTales
 						</h1>
 					</div>
 					<button
 						onClick={() => setDarkMode(!darkMode)}
-						className={`p-2 rounded-full ${
+						className={`p-2 rounded-full transition-all duration-300 ${
 							darkMode
-								? "bg-gray-800 text-yellow-300"
-								: "bg-amber-200 text-gray-800"
+								? "bg-gray-800 text-yellow-300 shadow-lg"
+								: "bg-white text-gray-800 shadow-md"
 						}`}
 						aria-label="Toggle dark mode"
 					>
 						<div
-							className={`w-5 h-5 rounded-full ${
+							className={`w-5 h-5 rounded-full transition-all duration-300 ${
 								darkMode ? "bg-yellow-300" : "bg-gray-800"
 							}`}
 						></div>
@@ -97,51 +115,57 @@ const BedtimeStoryGenerator = () => {
 				</header>
 
 				{/* Main Content */}
-				<main className="max-w-4xl mx-auto">
+				<main className="max-w-5xl mx-auto backdrop-blur-sm bg-opacity-80 rounded-2xl overflow-hidden">
 					{/* Tabs */}
-					<div className="flex border-b mb-6 overflow-x-auto">
+					<div className="flex border-b border-gray-200 dark:border-gray-700 overflow-x-auto">
 						<button
 							onClick={() => setActiveTab("generate")}
-							className={`px-4 py-2 font-medium whitespace-nowrap ${
+							className={`px-6 py-3 font-medium whitespace-nowrap relative ${
 								activeTab === "generate"
-									? darkMode
-										? "border-b-2 border-purple-500 text-purple-400"
-										: "border-b-2 border-purple-600 text-purple-700"
-									: ""
+									? "text-purple-600 dark:text-purple-400"
+									: "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
 							}`}
 						>
 							Generate Story
+							{activeTab === "generate" && (
+								<span className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
+							)}
 						</button>
 						<button
 							onClick={() => setActiveTab("library")}
-							className={`px-4 py-2 font-medium whitespace-nowrap ${
+							className={`px-6 py-3 font-medium whitespace-nowrap relative ${
 								activeTab === "library"
-									? darkMode
-										? "border-b-2 border-purple-500 text-purple-400"
-										: "border-b-2 border-purple-600 text-purple-700"
-									: ""
+									? "text-purple-600 dark:text-purple-400"
+									: "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
 							}`}
 						>
 							Story Library
+							{activeTab === "library" && (
+								<span className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 to-pink-500"></span>
+							)}
 						</button>
 					</div>
 
 					{/* Generate Tab */}
 					{activeTab === "generate" && (
-						<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+						<div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-6 p-6">
 							<div
-								className={`p-4 sm:p-6 rounded-lg ${
+								className={`p-6 rounded-xl ${
 									darkMode
-										? "bg-gray-800"
-										: "bg-white shadow-md"
-								}`}
+										? "bg-gray-800/80 backdrop-blur-sm"
+										: "bg-white/90 backdrop-blur-sm"
+								} shadow-lg`}
 							>
-								<h2 className="text-xl font-bold mb-4">
+								<h2 className="text-xl font-bold mb-6 flex items-center">
+									<span className="w-3 h-3 rounded-full bg-pink-500 mr-2"></span>
 									Create Your Story
 								</h2>
-								<form onSubmit={generateStory}>
-									<div className="mb-4">
-										<label className="block mb-2 font-medium">
+								<form
+									onSubmit={generateStory}
+									className="space-y-5"
+								>
+									<div>
+										<label className="block mb-2 font-medium text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
 											Child's Name
 										</label>
 										<input
@@ -149,141 +173,146 @@ const BedtimeStoryGenerator = () => {
 											name="childName"
 											value={formData.childName}
 											onChange={handleInputChange}
-											className={`w-full p-2 rounded border ${
+											className={`w-full p-3 rounded-lg border-0 ${
 												darkMode
-													? "bg-gray-700 border-gray-600"
-													: "bg-amber-50 border-amber-200"
-											}`}
+													? "bg-gray-700/50 focus:ring-purple-500"
+													: "bg-gray-50 focus:ring-pink-300"
+											} focus:ring-2 focus:outline-none transition-all`}
 											required
 										/>
 									</div>
 
-									<div className="mb-4">
-										<label className="block mb-2 font-medium">
-											Age
-										</label>
-										<input
-											type="number"
-											name="age"
-											min="1"
-											max="12"
-											value={formData.age}
-											onChange={handleInputChange}
-											className={`w-full p-2 rounded border ${
-												darkMode
-													? "bg-gray-700 border-gray-600"
-													: "bg-amber-50 border-amber-200"
-											}`}
-											required
-										/>
+									<div className="grid grid-cols-2 gap-4">
+										<div>
+											<label className="block mb-2 font-medium text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+												Age
+											</label>
+											<input
+												type="number"
+												name="age"
+												min="1"
+												max="12"
+												value={formData.age}
+												onChange={handleInputChange}
+												className={`w-full p-3 rounded-lg border-0 ${
+													darkMode
+														? "bg-gray-700/50 focus:ring-purple-500"
+														: "bg-gray-50 focus:ring-pink-300"
+												} focus:ring-2 focus:outline-none transition-all`}
+												required
+											/>
+										</div>
+										<div>
+											<label className="block mb-2 font-medium text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+												Story Length
+											</label>
+											<select
+												name="storyLength"
+												value={formData.storyLength}
+												onChange={handleInputChange}
+												className={`w-full p-3 rounded-lg border-0 ${
+													darkMode
+														? "bg-gray-700/50 focus:ring-purple-500"
+														: "bg-gray-50 focus:ring-pink-300"
+												} focus:ring-2 focus:outline-none transition-all`}
+											>
+												<option value="short">
+													Short (1-2 min)
+												</option>
+												<option value="medium">
+													Medium (3-5 min)
+												</option>
+												<option value="long">
+													Long (5+ min)
+												</option>
+											</select>
+										</div>
 									</div>
 
-									<div className="mb-4">
-										<label className="block mb-2 font-medium">
-											Interests (e.g., dinosaurs,
-											princesses, space)
+									<div>
+										<label className="block mb-2 font-medium text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+											Interests
 										</label>
 										<input
 											type="text"
 											name="interests"
 											value={formData.interests}
 											onChange={handleInputChange}
-											className={`w-full p-2 rounded border ${
+											className={`w-full p-3 rounded-lg border-0 ${
 												darkMode
-													? "bg-gray-700 border-gray-600"
-													: "bg-amber-50 border-amber-200"
-											}`}
+													? "bg-gray-700/50 focus:ring-purple-500"
+													: "bg-gray-50 focus:ring-pink-300"
+											} focus:ring-2 focus:outline-none transition-all`}
+											placeholder="dinosaurs, princesses, space..."
 											required
 										/>
 									</div>
 
-									<div className="mb-4">
-										<label className="block mb-2 font-medium">
-											Moral Lesson (e.g., kindness,
-											honesty, bravery)
+									<div>
+										<label className="block mb-2 font-medium text-sm uppercase tracking-wider text-gray-500 dark:text-gray-400">
+											Moral Lesson
 										</label>
 										<input
 											type="text"
 											name="moralLesson"
 											value={formData.moralLesson}
 											onChange={handleInputChange}
-											className={`w-full p-2 rounded border ${
+											className={`w-full p-3 rounded-lg border-0 ${
 												darkMode
-													? "bg-gray-700 border-gray-600"
-													: "bg-amber-50 border-amber-200"
-											}`}
+													? "bg-gray-700/50 focus:ring-purple-500"
+													: "bg-gray-50 focus:ring-pink-300"
+											} focus:ring-2 focus:outline-none transition-all`}
+											placeholder="kindness, honesty, bravery..."
 											required
 										/>
-									</div>
-
-									<div className="mb-6">
-										<label className="block mb-2 font-medium">
-											Story Length
-										</label>
-										<select
-											name="storyLength"
-											value={formData.storyLength}
-											onChange={handleInputChange}
-											className={`w-full p-2 rounded border ${
-												darkMode
-													? "bg-gray-700 border-gray-600"
-													: "bg-amber-50 border-amber-200"
-											}`}
-										>
-											<option value="short">
-												Short (1-2 minutes)
-											</option>
-											<option value="medium">
-												Medium (3-5 minutes)
-											</option>
-											<option value="long">
-												Long (5+ minutes)
-											</option>
-										</select>
 									</div>
 
 									<button
 										type="submit"
 										disabled={isGenerating}
-										className={`w-full py-3 px-4 rounded-lg font-bold flex items-center justify-center ${
+										className={`w-full py-4 px-6 rounded-xl font-bold flex items-center justify-center transition-all duration-300 ${
 											isGenerating
 												? "bg-purple-400"
-												: "bg-purple-600 hover:bg-purple-700"
-										} text-white transition-colors`}
+												: "bg-gradient-to-r from-purple-600 to-pink-500 hover:from-purple-700 hover:to-pink-600 shadow-lg hover:shadow-xl"
+										} text-white`}
 									>
 										{isGenerating ? (
 											<>
 												<div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-												Generating...
+												Generating Magic...
 											</>
 										) : (
-											"Generate Story"
+											<>
+												<span className="mr-2">✨</span>{" "}
+												Generate Story
+											</>
 										)}
 									</button>
 								</form>
 							</div>
 
 							<div
-								className={`p-4 sm:p-6 rounded-lg ${
+								className={`p-6 rounded-xl ${
 									darkMode
-										? "bg-gray-800"
-										: "bg-white shadow-md"
-								}`}
+										? "bg-gray-800/80 backdrop-blur-sm"
+										: "bg-white/90 backdrop-blur-sm"
+								} shadow-lg mt-6 lg:mt-0`}
 							>
-								<div className="flex justify-between items-center mb-4">
-									<h2 className="text-xl font-bold">
+								<div className="flex justify-between items-center mb-6">
+									<h2 className="text-xl font-bold flex items-center">
+										<span className="w-3 h-3 rounded-full bg-purple-500 mr-2"></span>
 										Your Story
 									</h2>
 									{generatedStory && (
 										<button
 											onClick={saveStory}
-											className={`flex items-center py-1 px-3 rounded ${
+											className={`flex items-center py-2 px-4 rounded-lg transition-all ${
 												darkMode
-													? "bg-purple-700 hover:bg-purple-600"
-													: "bg-purple-100 hover:bg-purple-200"
-											} transition-colors`}
+													? "bg-gray-700 hover:bg-gray-600"
+													: "bg-gray-100 hover:bg-gray-200"
+											} shadow-sm`}
 										>
-											<div className="w-4 h-4 rounded-full bg-current mr-1"></div>{" "}
+											<span className="mr-2">💾</span>{" "}
 											Save
 										</button>
 									)}
@@ -291,26 +320,34 @@ const BedtimeStoryGenerator = () => {
 
 								{generatedStory ? (
 									<div
-										className={`p-3 sm:p-4 rounded ${
+										className={`p-5 rounded-lg ${
 											darkMode
-												? "bg-gray-700"
-												: "bg-amber-50"
-										} whitespace-pre-line`}
+												? "bg-gray-700/50"
+												: "bg-gray-50"
+										} transition-all`}
 									>
-										{generatedStory}
+										<div className="prose dark:prose-invert max-w-none">
+											<p className="text-lg leading-relaxed">
+												{generatedStory}
+											</p>
+										</div>
 									</div>
 								) : (
 									<div
-										className={`p-6 sm:p-8 text-center rounded ${
+										className={`p-8 text-center rounded-lg ${
 											darkMode
-												? "bg-gray-700 text-gray-400"
-												: "bg-amber-100 text-amber-800"
-										}`}
+												? "bg-gray-700/50 text-gray-400"
+												: "bg-gray-100 text-gray-600"
+										} transition-all`}
 									>
-										<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-current opacity-30 mx-auto mb-4"></div>
-										<p>
+										<div className="text-5xl mb-4">📖</div>
+										<p className="font-medium">
 											Your personalized story will appear
-											here once generated.
+											here
+										</p>
+										<p className="text-sm mt-2">
+											Fill out the form and click
+											"Generate Story"
 										</p>
 									</div>
 								)}
@@ -321,61 +358,70 @@ const BedtimeStoryGenerator = () => {
 					{/* Library Tab */}
 					{activeTab === "library" && (
 						<div
-							className={`p-4 sm:p-6 rounded-lg ${
-								darkMode ? "bg-gray-800" : "bg-white shadow-md"
-							}`}
+							className={`p-6 rounded-xl ${
+								darkMode
+									? "bg-gray-800/80 backdrop-blur-sm"
+									: "bg-white/90 backdrop-blur-sm"
+							} shadow-lg`}
 						>
-							<h2 className="text-xl font-bold mb-4">
+							<h2 className="text-xl font-bold mb-6 flex items-center">
+								<span className="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>
 								Your Saved Stories
 							</h2>
 
 							{savedStories.length > 0 ? (
-								<div className="space-y-3 sm:space-y-4">
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 									{savedStories.map((story) => (
 										<div
 											key={story.id}
-											className={`p-3 sm:p-4 rounded-lg ${
+											className={`p-5 rounded-lg transition-all ${
 												darkMode
-													? "bg-gray-700 hover:bg-gray-600"
-													: "bg-amber-50 hover:bg-amber-100"
-											} transition-colors cursor-pointer`}
+													? "bg-gray-700/50 hover:bg-gray-700"
+													: "bg-gray-100 hover:bg-gray-200"
+											} cursor-pointer shadow-sm`}
 										>
 											<div className="flex justify-between items-start">
 												<div>
-													<h3 className="font-bold text-sm sm:text-base">
+													<h3 className="font-bold text-lg">
 														{story.title}
 													</h3>
-													<p className="text-xs sm:text-sm opacity-70">
-														Created for{" "}
-														{story.childName} on{" "}
+													<p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+														For {story.childName} •{" "}
 														{story.date}
 													</p>
 												</div>
-												<div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-gray-500"></div>
+												<div className="text-2xl">
+													📚
+												</div>
 											</div>
-											<div className="mt-2 line-clamp-2 text-xs sm:text-sm">
+											<div className="mt-3 line-clamp-3 text-gray-700 dark:text-gray-300">
 												{story.content.substring(
 													0,
-													150
+													200
 												)}
 												...
 											</div>
+											<button className="mt-3 text-sm text-purple-600 dark:text-purple-400 hover:underline">
+												Read full story →
+											</button>
 										</div>
 									))}
 								</div>
 							) : (
 								<div
-									className={`p-6 sm:p-8 text-center rounded ${
+									className={`p-8 text-center rounded-lg ${
 										darkMode
-											? "bg-gray-700 text-gray-400"
-											: "bg-amber-100 text-amber-800"
-									}`}
+											? "bg-gray-700/50 text-gray-400"
+											: "bg-gray-100 text-gray-600"
+									} transition-all`}
 								>
-									<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-current opacity-30 mx-auto mb-4"></div>
-									<p>You haven't saved any stories yet.</p>
-									<p>
-										Generate a story and click "Save" to add
-										it to your library.
+									<div className="text-5xl mb-4">📚</div>
+									<p className="font-medium">
+										Your story library is empty
+									</p>
+									<p className="text-sm mt-2">
+										Generate and save stories to find them
+										here
 									</p>
 								</div>
 							)}
@@ -384,10 +430,8 @@ const BedtimeStoryGenerator = () => {
 				</main>
 
 				{/* Footer */}
-				<footer className="mt-8 sm:mt-12 text-center text-xs sm:text-sm opacity-70">
-					<p>
-						DreamyTales - Magical bedtime stories generated with AI
-					</p>
+				<footer className="mt-12 text-center text-sm text-gray-500 dark:text-gray-400">
+					<p>DreamyTales ✨ Magical AI-powered bedtime stories</p>
 				</footer>
 			</div>
 		</div>
