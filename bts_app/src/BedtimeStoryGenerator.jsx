@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useStoryGenerator } from "./useStoryGenerator";
 
 const BedtimeStoryGenerator = () => {
 	const [activeTab, setActiveTab] = useState("generate");
@@ -12,12 +11,7 @@ const BedtimeStoryGenerator = () => {
 	});
 	const [generatedStory, setGeneratedStory] = useState("");
 	const [savedStories, setSavedStories] = useState([]);
-
-	const {
-		generateStory: generateStoryAI,
-		isLoading: isGenerating,
-		error,
-	} = useStoryGenerator();
+	const [isGenerating, setIsGenerating] = useState(false);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -27,10 +21,22 @@ const BedtimeStoryGenerator = () => {
 		}));
 	};
 
-	const handleGenerate = async (e) => {
+	const handleGenerate = (e) => {
 		e.preventDefault();
-		const story = await generateStoryAI(formData);
-		if (story) setGeneratedStory(story);
+		setIsGenerating(true);
+
+		// Simulate generation with all preferences
+		setTimeout(() => {
+			setGeneratedStory(
+				`Once upon a time, there was a ${formData.age}-year-old named ${formData.childName} who loved ${formData.interests}. ` +
+					`One magical day, while exploring the enchanted forest, ${formData.childName} discovered that ${formData.moralLesson} ` +
+					`was the most important treasure of all. This ${
+						formData.storyLength === "short" ? "short" : "wonderful"
+					} tale ` +
+					`reminds us that kindness and courage live in every heart. The end.`
+			);
+			setIsGenerating(false);
+		}, 1500);
 	};
 
 	const saveStory = () => {
@@ -42,10 +48,12 @@ const BedtimeStoryGenerator = () => {
 			content: generatedStory,
 			date: new Date().toLocaleDateString(),
 			childName: formData.childName,
+			age: formData.age,
+			interests: formData.interests,
 		};
 
 		setSavedStories((prev) => [...prev, newStory]);
-		alert("Story saved successfully!");
+		alert("Story saved to your library!");
 	};
 
 	return (
@@ -143,7 +151,7 @@ const BedtimeStoryGenerator = () => {
 												<input
 													type="number"
 													name="age"
-													min="1"
+													min="3"
 													max="12"
 													value={formData.age}
 													onChange={handleInputChange}
@@ -305,7 +313,8 @@ const BedtimeStoryGenerator = () => {
 														{story.title}
 													</h3>
 													<p className="text-sm text-indigo-500 mt-1">
-														For {story.childName} •{" "}
+														For {story.childName}{" "}
+														(Age {story.age}) •{" "}
 														{story.date}
 													</p>
 												</div>
@@ -338,12 +347,6 @@ const BedtimeStoryGenerator = () => {
 									</p>
 								</div>
 							)}
-						</div>
-					)}
-
-					{error && (
-						<div className="p-4 bg-red-100 text-red-700 rounded-lg mt-6 border-2 border-red-200">
-							{error}
 						</div>
 					)}
 				</main>
